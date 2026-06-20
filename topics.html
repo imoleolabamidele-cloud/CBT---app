@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topics</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="card">
+
+    <h1 id="title">📖 TOPICS</h1>
+
+    <p>Choose a topic to continue learning</p>
+
+    <div id="topicList"></div>
+
+  </div>
+
+</div>
+
+<script>
+
+// 🔐 CHECK USER LOGIN
+const user = JSON.parse(localStorage.getItem("user"));
+
+if (!user) {
+    window.location.href = "login.html";
+}
+
+// 📚 GET SELECTED SUBJECT
+const subject = localStorage.getItem("currentSubject");
+
+if (!subject) {
+    window.location.href = "subjects.html";
+}
+
+// 🏷️ SHOW SUBJECT NAME
+document.getElementById("title").innerText =
+    subject.toUpperCase() + " TOPICS";
+
+// 📖 TOPICS DATABASE (ALL SUBJECTS)
+const topicsData = {
+
+    English: [
+        "Grammar",
+        "Comprehension",
+        "Essay Writing"
+    ],
+
+    Mathematics: [
+        "Algebra",
+        "Fractions",
+        "Geometry",
+        "Indices"
+    ],
+
+    Biology: [
+        "Cell",
+        "Ecology",
+        "Genetics"
+    ],
+
+    Chemistry: [
+        "Atoms",
+        "Periodic Table",
+        "Chemical Bonding"
+    ],
+
+    Physics: [
+        "Motion",
+        "Energy",
+        "Electricity"
+    ],
+
+    Economics: [
+        "Demand",
+        "Supply",
+        "Market Structure"
+    ],
+
+    Government: [
+        "Democracy",
+        "Constitution",
+        "Political Parties"
+    ],
+
+    Literature: [
+        "Drama",
+        "Poetry",
+        "Prose"
+    ],
+
+    Commerce: [
+        "Trade",
+        "Banking",
+        "Business Organization"
+    ],
+
+    Accounting: [
+        "Ledger",
+        "Balance Sheet",
+        "Profit & Loss"
+    ],
+
+    CRS: [
+        "Bible Study",
+        "Faith",
+        "Commandments"
+    ],
+
+    History: [
+        "Nigeria History",
+        "Colonialism",
+        "Independence"
+    ]
+};
+
+// 📌 GET TOPICS FOR SELECTED SUBJECT
+const topics = topicsData[subject] || [];
+
+const topicList = document.getElementById("topicList");
+
+// 🚀 RENDER TOPIC BUTTONS
+topics.forEach(topic => {
+
+    const btn = document.createElement("button");
+
+    btn.className = "btn";
+    btn.textContent = topic;
+
+    btn.onclick = () => {
+
+        // 💾 SAVE TOPIC
+        localStorage.setItem("currentTopic", topic);
+
+        // 🔗 GO TO LESSON PAGE
+        window.location.href = "lesson.html";
+    };
+
+    topicList.appendChild(btn);
+
+});
+
+</script>
+
+</body>
+</html>

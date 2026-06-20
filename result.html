@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CBT Result</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>📊 EXAM RESULT</h1>
+
+    <div id="resultBox"></div>
+
+    <button class="btn" onclick="goHome()">🏠 BACK HOME</button>
+
+  </div>
+
+  <script>
+    let score = localStorage.getItem("score") || 0;
+    let total = localStorage.getItem("total") || 0;
+
+    let percent = (score / total) * 100;
+
+    let grade = "";
+
+    if (percent >= 70) {
+      grade = "A - Excellent 🔥";
+    } else if (percent >= 60) {
+      grade = "B - Very Good 👍";
+    } else if (percent >= 50) {
+      grade = "C - Good 🙂";
+    } else if (percent >= 40) {
+      grade = "D - Fair 😐";
+    } else {
+      grade = "F - Fail ❌";
+    }
+
+    document.getElementById("resultBox").innerHTML = `
+      <h2>You scored: ${score} / ${total}</h2>
+      <h2>Percentage: ${percent.toFixed(1)}%</h2>
+      <h2>Grade: ${grade}</h2>
+    `;
+
+    function goHome() {
+      window.location.href = "index.html";
+    }
+  </script>
+
+</body>
+</html>

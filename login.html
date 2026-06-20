@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JAMB CBT PREP - LOGIN</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#0f172a;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    padding:20px;
+}
+
+.card{
+    background:#1e293b;
+    width:100%;
+    max-width:450px;
+    padding:30px;
+    border-radius:20px;
+    text-align:center;
+    color:white;
+}
+
+h1{
+    font-size:35px;
+    font-weight:900;
+    margin-bottom:10px;
+}
+
+p{
+    font-size:18px;
+    font-weight:700;
+    margin-bottom:20px;
+}
+
+input,
+select{
+    width:100%;
+    padding:15px;
+    margin:10px 0;
+    border:none;
+    border-radius:12px;
+    font-size:16px;
+    font-weight:bold;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    margin-top:15px;
+    border:none;
+    border-radius:12px;
+    background:#2563eb;
+    color:white;
+    font-size:18px;
+    font-weight:900;
+    cursor:pointer;
+}
+
+button:hover{
+    opacity:0.9;
+}
+</style>
+
+</head>
+<body>
+
+<div class="card">
+
+    <h1>📚 JAMB CBT PREP</h1>
+
+    <p>LOGIN TO START LEARNING</p>
+
+    <input type="text" id="name" placeholder="FULL NAME">
+
+    <input type="number" id="age" placeholder="AGE">
+
+    <select id="department">
+        <option value="">SELECT DEPARTMENT</option>
+        <option value="Science">SCIENCE</option>
+        <option value="Arts">ARTS</option>
+        <option value="Commercial">COMMERCIAL</option>
+    </select>
+
+    <button onclick="login()">
+        CONTINUE
+    </button>
+
+</div>
+
+<script>
+
+function login(){
+
+    let name =
+    document.getElementById("name").value.trim();
+
+    let age =
+    document.getElementById("age").value;
+
+    let department =
+    document.getElementById("department").value;
+
+    if(name === "" || age === "" || department === ""){
+        alert("PLEASE FILL ALL FIELDS");
+        return;
+    }
+
+    let user = {
+        name:name,
+        age:age,
+        department:department
+    };
+
+    localStorage.setItem(
+        "user",
+        JSON.stringify(user)
+    );
+
+    window.location.href = "index.html";
+}
+
+</script>
+
+</body>
+</html>

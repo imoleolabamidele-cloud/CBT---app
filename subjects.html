@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Subjects</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="card">
+
+    <h1>📚 SELECT SUBJECT</h1>
+
+    <p>Choose a subject to continue</p>
+
+    <div id="subjectList"></div>
+
+  </div>
+
+</div>
+
+<script>
+
+// 🔐 CHECK USER LOGIN
+const user = JSON.parse(localStorage.getItem("user"));
+
+if (!user) {
+    window.location.href = "login.html";
+}
+
+// 📚 SUBJECT LIST BY DEPARTMENT
+let subjects = [];
+
+if (user.department === "Science") {
+    subjects = [
+        "English",
+        "Mathematics",
+        "Biology",
+        "Chemistry",
+        "Physics"
+    ];
+}
+
+else if (user.department === "Arts") {
+    subjects = [
+        "English",
+        "Literature",
+        "Government",
+        "CRS",
+        "History"
+    ];
+}
+
+else if (user.department === "Commercial") {
+    subjects = [
+        "English",
+        "Mathematics",
+        "Economics",
+        "Commerce",
+        "Accounting"
+    ];
+}
+
+// 📌 RENDER SUBJECT BUTTONS
+const list = document.getElementById("subjectList");
+
+subjects.forEach(subject => {
+
+    const btn = document.createElement("button");
+
+    btn.className = "btn";
+    btn.textContent = subject;
+
+    btn.onclick = () => {
+
+        // 💾 SAVE SUBJECT
+        localStorage.setItem("currentSubject", subject);
+
+        // 🔗 GO TO TOPICS PAGE
+        window.location.href = "topics.html";
+    };
+
+    list.appendChild(btn);
+
+});
+
+</script>
+
+</body>
+</html>

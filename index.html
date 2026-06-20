@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JAMB CBT Dashboard</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="card">
+
+    <h1 id="welcome">WELCOME</h1>
+
+    <p>🚀 Learn. Practice. Pass JAMB.</p>
+
+    <button class="btn" onclick="goSubjects()">
+      📚 START LEARNING
+    </button>
+
+    <button class="btn" onclick="goRanking()">
+      🏆 VIEW RANKING
+    </button>
+
+    <button class="btn" onclick="logout()">
+      🚪 LOGOUT
+    </button>
+
+  </div>
+
+</div>
+
+<script>
+
+// 🔐 CHECK IF USER EXISTS
+const user = JSON.parse(localStorage.getItem("user"));
+
+if (!user) {
+    window.location.href = "login.html";
+}
+
+// 👤 SHOW USER NAME
+document.getElementById("welcome").innerHTML =
+    "WELCOME,<br>" + user.name.toUpperCase();
+
+// 📚 GO TO SUBJECTS
+function goSubjects() {
+    window.location.href = "subjects.html";
+}
+
+// 🏆 GO TO RANKING
+function goRanking() {
+    window.location.href = "ranking.html";
+}
+
+// 🚪 LOGOUT USER
+function logout() {
+    localStorage.removeItem("user");
+    localStorage.removeItem("currentSubject");
+    localStorage.removeItem("currentTopic");
+
+    window.location.href = "login.html";
+}
+
+</script>
+
+</body>
+</html>
