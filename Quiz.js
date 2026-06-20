@@ -1,112 +1,75 @@
-let subject = localStorage.getItem("currentSubject") || "English";
-let questions = cbt[subject];
-
 let current = 0;
-let userAnswers = new Array(questions.length).fill(null);
+let score = 0;
 
-// title
-document.getElementById("subjectTitle").innerText = subject.toUpperCase();
+let answers = Array(50).fill(null);
 
-function loadQuestion() {
-  let q = questions[current];
+function loadQ() {
+  let q = questions.english[current];
 
-  document.getElementById("questionBox").innerText =
-    `${current + 1}. ${q.q}`;
+  document.getElementById("question").innerText =
+    (current + 1) + ". " + q.q;
 
-  let html = "";
+  let optionsDiv = document.getElementById("options");
+  optionsDiv.innerHTML = "";
 
-  q.options.forEach((opt, i) => {
+  q.options.forEach(opt => {
+    let btn = document.createElement("button");
+    btn.innerText = opt;
 
-    let selected = userAnswers[current] === i ? "selected" : "";
+    btn.onclick = () => {
+      answers[current] = opt;
+      updateNav();
+      nextQ();
+    };
 
-    html += `
-      <button class="option ${selected}" onclick="selectAnswer(${i})">
-        ${opt}
-      </button>
-    `;
+    optionsDiv.appendChild(btn);
   });
 
-  document.getElementById("optionsBox").innerHTML = html;
-
-  renderNav();
+  updateNav();
 }
 
-function selectAnswer(index) {
-  userAnswers[current] = index;
-  loadQuestion();
+function nextQ() {
+  if (current < 49) current++;
+  loadQ();
 }
 
-function nextQuestion() {
-  if (current < questions.length - 1) {
-    current++;
-    loadQuestion();
+function prevQ() {
+  if (current > 0) current--;
+  loadQ();
+}
+
+function updateNav() {
+  let nav = document.getElementById("nav");
+  nav.innerHTML = "";
+
+  for (let i = 0; i < 50; i++) {
+    let btn = document.createElement("button");
+    btn.innerText = i + 1;
+
+    if (answers[i]) btn.style.background = "green";
+
+    btn.onclick = () => {
+      current = i;
+      loadQ();
+    };
+
+    nav.appendChild(btn);
   }
 }
 
-function prevQuestion() {
-  if (current > 0) {
-    current--;
-    loadQuestion();
-  }
-}
+loadQ();let time = 60 * 60;
 
-function goTo(i) {
-  current = i;
-  loadQuestion();
-}
-
-function renderNav() {
-  let nav = "";
-
-  for (let i = 0; i < questions.length; i++) {
-    let answered = userAnswers[i] !== null ? "answered" : "";
-
-    nav += `
-      <button class="nav-btn ${answered}" onclick="goTo(${i})">
-        ${i + 1}
-      </button>
-    `;
-  }
-
-  document.getElementById("navBox").innerHTML = nav;
-}
-
-// SUBMIT + SCORING
-function submitExam() {
-  let score = 0;
-
-  userAnswers.forEach((ans, i) => {
-    if (ans === questions[i].answer) {
-      score++;
-    }
-  });
-
-  localStorage.setItem("score", score);
-  localStorage.setItem("total", questions.length);
-  localStorage.setItem("subject", subject);
-
-  window.location.href = "result.html";
-}
-
-/* TIMER */
-let time = 30 * 60;
-
-let timer = setInterval(() => {
-
+setInterval(() => {
   let min = Math.floor(time / 60);
   let sec = time % 60;
 
   document.getElementById("timer").innerText =
-    `Time Left: ${min}:${sec < 10 ? "0" + sec : sec}`;
+    min + ":" + sec;
 
   time--;
 
   if (time < 0) {
-    clearInterval(timer);
-    submitExam();
+    alert("Time up!");
+    window.location.href = "results.html";
   }
-
 }, 1000);
-
-// start
-loadQuestion();
