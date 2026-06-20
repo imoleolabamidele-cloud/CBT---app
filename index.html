@@ -1,71 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JAMB CBT Dashboard</title>
-
-<link rel="stylesheet" href="style.css">
+  <title>CBT Subjects</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
 <div class="container">
 
+  <h1>SELECT SUBJECT</h1>
+
+  <h3 id="welcome"></h3>
+
   <div class="card">
 
-    <h1 id="welcome">WELCOME</h1>
-
-    <p>🚀 Learn. Practice. Pass JAMB.</p>
-
-    <button class="btn" onclick="goSubjects()">
-      📚 START LEARNING
-    </button>
-
-    <button class="btn" onclick="goRanking()">
-      🏆 VIEW RANKING
-    </button>
-
-    <button class="btn" onclick="logout()">
-      🚪 LOGOUT
-    </button>
+    <button onclick="start('english')">English</button>
+    <button onclick="start('math')">Mathematics</button>
+    <button onclick="start('biology')">Biology</button>
+    <button onclick="start('physics')">Physics</button>
+    <button onclick="start('chemistry')">Chemistry</button>
+    <button onclick="start('economics')">Economics</button>
+    <button onclick="start('government')">Government</button>
+    <button onclick="start('commerce')">Commerce</button>
+    <button onclick="start('literature')">Literature</button>
+    <button onclick="start('agriculture')">Agriculture</button>
+    <button onclick="start('civic')">Civic Education</button>
 
   </div>
 
 </div>
 
 <script>
+let name = localStorage.getItem("name");
 
-// 🔐 CHECK IF USER EXISTS
-const user = JSON.parse(localStorage.getItem("user"));
-
-if (!user) {
-    window.location.href = "login.html";
+if (!name) {
+  window.location.href = "login.html";
 }
 
-// 👤 SHOW USER NAME
-document.getElementById("welcome").innerHTML =
-    "WELCOME,<br>" + user.name.toUpperCase();
+document.getElementById("welcome").innerText =
+  "Welcome " + name;
 
-// 📚 GO TO SUBJECTS
-function goSubjects() {
-    window.location.href = "subjects.html";
+function start(subject) {
+  localStorage.setItem("subject", subject);
+  window.location.href = "quiz.html";
 }
-
-// 🏆 GO TO RANKING
-function goRanking() {
-    window.location.href = "ranking.html";
-}
-
-// 🚪 LOGOUT USER
-function logout() {
-    localStorage.removeItem("user");
-    localStorage.removeItem("currentSubject");
-    localStorage.removeItem("currentTopic");
-
-    window.location.href = "login.html";
-}
-
 </script>
 
 </body>
