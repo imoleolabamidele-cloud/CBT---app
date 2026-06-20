@@ -1,16 +1,30 @@
+let subject = localStorage.getItem("subject") || "english";
 let current = 0;
 let score = 0;
+let answers = Array(30).fill(null);
 
-let answers = Array(50).fill(null);
+// TIMER
+let time = 60 * 60;
+setInterval(() => {
+  let m = Math.floor(time / 60);
+  let s = time % 60;
+
+  document.getElementById("timer").innerText =
+    m + ":" + (s < 10 ? "0" + s : s);
+
+  time--;
+
+  if (time < 0) finish();
+}, 1000);
 
 function loadQ() {
-  let q = questions.english[current];
+  let q = questions[subject][current];
 
   document.getElementById("question").innerText =
     (current + 1) + ". " + q.q;
 
-  let optionsDiv = document.getElementById("options");
-  optionsDiv.innerHTML = "";
+  let optDiv = document.getElementById("options");
+  optDiv.innerHTML = "";
 
   q.options.forEach(opt => {
     let btn = document.createElement("button");
@@ -18,58 +32,33 @@ function loadQ() {
 
     btn.onclick = () => {
       answers[current] = opt;
-      updateNav();
       nextQ();
     };
 
-    optionsDiv.appendChild(btn);
+    optDiv.appendChild(btn);
   });
-
-  updateNav();
 }
 
 function nextQ() {
-  if (current < 49) current++;
-  loadQ();
-}
-
-function prevQ() {
-  if (current > 0) current--;
-  loadQ();
-}
-
-function updateNav() {
-  let nav = document.getElementById("nav");
-  nav.innerHTML = "";
-
-  for (let i = 0; i < 50; i++) {
-    let btn = document.createElement("button");
-    btn.innerText = i + 1;
-
-    if (answers[i]) btn.style.background = "green";
-
-    btn.onclick = () => {
-      current = i;
-      loadQ();
-    };
-
-    nav.appendChild(btn);
+  if (current < 29) {
+    current++;
+    loadQ();
+  } else {
+    finish();
   }
 }
 
-loadQ();let time = 60 * 60;
-
-setInterval(() => {
-  let min = Math.floor(time / 60);
-  let sec = time % 60;
-
-  document.getElementById("timer").innerText =
-    min + ":" + sec;
-
-  time--;
-
-  if (time < 0) {
-    alert("Time up!");
-    window.location.href = "results.html";
+function finish() {
+  for (let i = 0; i < 30; i++) {
+    if (answers[i] === questions[subject][i].answer) {
+      score++;
+    }
   }
-}, 1000);
+
+  localStorage.setItem("score", score);
+  localStorage.setItem("total", 30);
+
+  window.location.href = "results.html";
+}
+
+loadQ();
