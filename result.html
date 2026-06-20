@@ -1,52 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>CBT Result</title>
+  <title>Result</title>
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-  <div class="container">
+<div class="container card">
 
-    <h1>📊 EXAM RESULT</h1>
+  <h1>RESULT</h1>
 
-    <div id="resultBox"></div>
+  <h2 id="score"></h2>
 
-    <button class="btn" onclick="goHome()">🏠 BACK HOME</button>
+  <a href="index.html"><button>BACK HOME</button></a>
 
-  </div>
+</div>
 
-  <script>
-    let score = localStorage.getItem("score") || 0;
-    let total = localStorage.getItem("total") || 0;
+<script>
+let score = localStorage.getItem("score");
+let total = localStorage.getItem("total");
 
-    let percent = (score / total) * 100;
-
-    let grade = "";
-
-    if (percent >= 70) {
-      grade = "A - Excellent 🔥";
-    } else if (percent >= 60) {
-      grade = "B - Very Good 👍";
-    } else if (percent >= 50) {
-      grade = "C - Good 🙂";
-    } else if (percent >= 40) {
-      grade = "D - Fair 😐";
-    } else {
-      grade = "F - Fail ❌";
-    }
-
-    document.getElementById("resultBox").innerHTML = `
-      <h2>You scored: ${score} / ${total}</h2>
-      <h2>Percentage: ${percent.toFixed(1)}%</h2>
-      <h2>Grade: ${grade}</h2>
-    `;
-
-    function goHome() {
-      window.location.href = "index.html";
-    }
-  </script>
+document.getElementById("score").innerText =
+  "Score: " + score + " / " + total;
+</script>
 
 </body>
 </html>
