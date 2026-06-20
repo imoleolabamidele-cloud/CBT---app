@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JAMB CBT</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="top-bar">
+  <h2>JAMB CBT EXAM</h2>
+  <div id="timer">60:00</div>
+</div>
+
+<div class="container">
+
+  <div class="question-box">
+    <h3 id="question">Question</h3>
+
+    <div id="options"></div>
+
+    <div class="controls">
+      <button onclick="prevQ()">Previous</button>
+      <button onclick="nextQ()">Next</button>
+    </div>
+  </div>
+
+  <div class="nav-panel" id="nav"></div>
+
+</div>
+
+<script src="data.js"></script>
+<script src="quiz.js"></script>
+
+</body>
+  </html>
