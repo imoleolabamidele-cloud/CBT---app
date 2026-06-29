@@ -1,41 +1,115 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>CBT Login</title>
+  <meta charset="UTF-8">
+  <title>Login - GPT Earn</title>
   <link rel="stylesheet" href="style.css">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #0f1115;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .box {
+      width: 350px;
+      background: #171a21;
+      padding: 25px;
+      border-radius: 12px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #1f6fff;
+      font-weight: 900;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 8px;
+      background: #222;
+      color: white;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      background: #1f6fff;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .link {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #aaa;
+    }
+
+    .link a {
+      color: #00ff88;
+      text-decoration: none;
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="container">
+<div class="box">
+  <h2>LOGIN</h2>
 
-  <h1>CBT LOGIN</h1>
+  <input type="email" id="email" placeholder="Email">
+  <input type="password" id="password" placeholder="Password">
 
-  <div class="card">
+  <button onclick="login()">Login</button>
 
-    <input id="name" placeholder="Full Name">
-    <input id="reg" placeholder="Reg Number">
-
-    <button onclick="login()">START EXAM</button>
-
+  <div class="link">
+    Don't have an account? <a href="signup.html">Sign Up</a>
   </div>
-
 </div>
 
-<script>
-function login() {
-  let name = document.getElementById("name").value;
-  let reg = document.getElementById("reg").value;
+<script type="module">
+import {
+  auth,
+  signInWithEmailAndPassword
+} from "./firebase.js";
 
-  if (!name || !reg) {
+window.login = async function () {
+
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+
+  if (!email || !password) {
     alert("Fill all fields");
     return;
   }
 
-  localStorage.setItem("name", name);
-  localStorage.setItem("reg", reg);
+  try {
 
-  window.location.href = "index.html";
-}
+    await signInWithEmailAndPassword(auth, email, password);
+
+    alert("Login successful!");
+
+    window.location.href = "dashboard.html";
+
+  } catch (error) {
+    alert(error.message);
+  }
+};
 </script>
 
 </body>

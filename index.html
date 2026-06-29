@@ -1,50 +1,100 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>CBT Subjects</title>
+  <meta charset="UTF-8">
+  <title>GPT Earn</title>
   <link rel="stylesheet" href="style.css">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f1115;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 400px;
+      padding: 30px;
+      background: #171a21;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 900;
+      color: #00ff88;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #aaa;
+      margin-bottom: 25px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    .signup {
+      background: #00ff88;
+      color: #000;
+    }
+
+    .login {
+      background: #1f6fff;
+      color: white;
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="container">
+  <div class="container">
+    <h1>💰 GPT EARN</h1>
+    <p>Watch ads • Complete tasks • Earn money</p>
 
-  <h1>SELECT SUBJECT</h1>
-
-  <h3 id="welcome"></h3>
-
-  <div class="card">
-
-    <button onclick="start('english')">English</button>
-    <button onclick="start('math')">Mathematics</button>
-    <button onclick="start('biology')">Biology</button>
-    <button onclick="start('physics')">Physics</button>
-    <button onclick="start('chemistry')">Chemistry</button>
-    <button onclick="start('economics')">Economics</button>
-    <button onclick="start('government')">Government</button>
-    <button onclick="start('commerce')">Commerce</button>
-    <button onclick="start('literature')">Literature</button>
-    <button onclick="start('agriculture')">Agriculture</button>
-    <button onclick="start('civic')">Civic Education</button>
-
+    <button class="signup" onclick="goSignup()">Sign Up</button>
+    <button class="login" onclick="goLogin()">Login</button>
   </div>
 
-</div>
+  <script type="module">
+    import { auth } from "./firebase.js";
+    import { onAuthStateChanged } from "firebase/auth";
 
-<script>
-let name = localStorage.getItem("name");
+    // Auto redirect if logged in
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        window.location.href = "dashboard.html";
+      }
+    });
 
-if (!name) {
-  window.location.href = "login.html";
-}
+    window.goSignup = function () {
+      window.location.href = "signup.html";
+    };
 
-document.getElementById("welcome").innerText =
-  "Welcome " + name;
-
-function start(subject) {
-  localStorage.setItem("subject", subject);
-  window.location.href = "quiz.html";
-}
-</script>
-
+    window.goLogin = function () {
+      window.location.href = "login.html";
+    };
+  </script>
+<script type="module" src="firebase.js"></script>
 </body>
 </html>

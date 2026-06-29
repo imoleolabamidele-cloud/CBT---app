@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard - GPT Earn</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #0f1115;
+      color: white;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .box {
+      width: 430px;
+      background: #171a21;
+      padding: 20px;
+      border-radius: 15px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #00ff88;
+      font-weight: 900;
+    }
+
+    .coin-header {
+      background: #1f6fff;
+      padding: 15px;
+      border-radius: 12px;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .coin-value {
+      font-size: 28px;
+      font-weight: 900;
+    }
+
+    .card {
+      background: #222;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 10px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .green { background: #00ff88; color: black; }
+    .blue { background: #1f6fff; color: white; }
+    .red { background: #ff3b3b; color: white; }
+
+    .ref-link {
+      font-size: 12px;
+      word-break: break-all;
+      color: #aaa;
+    }
+
+    .small {
+      font-size: 12px;
+      color: #aaa;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="box">
+
+  <h1>DASHBOARD</h1>
+
+  <div class="coin-header">
+    💰 Balance
+    <div class="coin-value">🪙 <span id="coins">0</span></div>
+  </div>
+
+  <div class="card">👤 Name: <span id="name">Loading...</span></div>
+  <div class="card">🔥 Streak: <span id="streak">0</span>/10</div>
+  <div class="card">👥 Referrals: <span id="refs">0</span></div>
+  <div class="card">🔗 Code: <span id="refCode">---</span></div>
+
+  <div class="card">
+    🌐 Link:
+    <div class="ref-link" id="refLink"></div>
+  </div>
+
+  <button class="blue" onclick="copyRef()">Copy Referral Link</button>
+
+  <button class="green" onclick="watchAd()">📺 Watch Ad (+10)</button>
+  <button class="green" onclick="completeSurvey()">📝 Survey (+200)</button>
+  <button class="blue" onclick="dailyBonus()">🔥 Daily Bonus</button>
+  <button class="red" onclick="logout()">Logout</button>
+
+  <div class="small">
+    Earn coins from ads, surveys, streaks & referrals
+  </div>
+
+</div>
+
+<script type="module">
+import {
+  auth,
+  db,
+  onAuthStateChanged,
+  signOut,
+  doc,
+  getDoc,
+  updateDoc,
+  increment
+} from "./firebase.js";
+
+let userRef;
+let userData;
+
+// AUTH CHECK
+onAuthStateChanged(auth, async (user) => {
+
+  if (!user) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  userRef = doc(db, "users", user.uid);
+
+  const snap = await getDoc(userRef);
+  userData = snap.data();
+
+  document.getElementById("name").innerText = userData.name;
+  document.getElementById("coins").innerText = userData.coins || 0;
+  document.getElementById("streak").innerText = userData.streak || 0;
+  document.getElementById("refs").innerText = userData.referrals || 0;
+  document.getElementById("refCode").innerText = userData.refCode;
+
+  const link =
+    window.location.origin +
+    "/signup.html?ref=" +
+    userData.refCode;
+
+  document.getElementById("refLink").innerText = link;
+});
+
+// WATCH AD
+window.watchAd = async function () {
+  await updateDoc(userRef, { coins: increment(10) });
+  refresh();
+};
+
+// SURVEY
+window.completeSurvey = async function () {
+  await updateDoc(userRef, { coins: increment(200) });
+  refresh();
+};
+
+// DAILY BONUS
+window.dailyBonus = async function () {
+
+  let reward = 10;
+  let streak = (userData.streak || 0) + 1;
+
+  if (streak >= 10) {
+    reward = 50;
+    streak = 0;
+  }
+
+  await updateDoc(userRef, {
+    coins: increment(reward),
+    streak: streak
+  });
+
+  refresh();
+};
+
+// REFRESH
+async function refresh() {
+  const snap = await getDoc(userRef);
+  const data = snap.data();
+  document.getElementById("coins").innerText = data.coins || 0;
+  document.getElementById("streak").innerText = data.streak || 0;
+  document.getElementById("refs").innerText = data.referrals || 0;
+}
+
+// COPY REF
+window.copyRef = function () {
+  navigator.clipboard.writeText(
+    document.getElementById("refLink").innerText
+  );
+  alert("Copied!");
+};
+
+// LOGOUT
+window.logout = async function () {
+  await signOut(auth);
+  window.location.href = "index.html";
+};
+</script>
+
+</body>
+</html>
